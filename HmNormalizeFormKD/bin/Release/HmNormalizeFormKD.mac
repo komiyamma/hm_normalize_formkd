@@ -1,0 +1,8 @@
+﻿
+#norm = createobject(currentmacrodirectory + "\\HmNormalizeFormKD.dll", "HmNormalizeFormKD");
+if (#norm) {
+selectall;
+insert( member(#norm, "NormalizeKD", getselectedtext()) );
+}
+
+
