@@ -1,8 +1,10 @@
 ﻿
 #norm = createobject(currentmacrodirectory + "\\HmNormalizeFormKD.dll", "HmNormalizeFormKD");
 if (#norm) {
+begingroupundo;
 selectall;
-insert( member(#norm, "Normalize", getselectedtext()) );
+insert( member(#norm, "Normalize", gettext2( seltopcolumn, seltoplineno, selendcolumn, selendlineno, 1 )) ); // gettext2*** は v9.19 なら getselectedtext() と短い表記が使える。
+endgroupundo;
 }
 
 
