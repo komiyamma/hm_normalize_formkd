@@ -12,13 +12,16 @@ public class HmNormalizeFormKD
         try
         {
             var fontFamily = new System.Windows.Media.FontFamily(fontname);
+
+            // BoldとかItalicとか色々あるかもしらんが、最初の１個しか使わない
+            // 入ってる文字リストが違うなんてことは先ず無いので最初のTypeFaceだけ
             foreach (var typeface in fontFamily.GetTypefaces())
             {
                 string sum = "";
                 GlyphTypeface gTypeface;
                 if (!typeface.TryGetGlyphTypeface(out gTypeface))
                 {
-                    return "Error";
+                    return "TryGetGlyphTypeface Error";
                 }
 
                 var chars = str.ToCharArray();
@@ -32,7 +35,15 @@ public class HmNormalizeFormKD
                     else
                     {
                         string temp = chr + "";
-                        sum += temp.Normalize(NormalizationForm.FormKD);
+                        try
+                        {
+                            // 完全互換分解を試みる
+                            sum += temp.Normalize(NormalizationForm.FormKD);
+                        }
+                        catch (Exception ex)
+                        {
+                            sum += chr;
+                        }
                     }
                 }
 
@@ -40,7 +51,8 @@ public class HmNormalizeFormKD
             }
 
             return "Error";
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             Trace.WriteLine(ex);
         }
